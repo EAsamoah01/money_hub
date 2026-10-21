@@ -1,4 +1,4 @@
-# Making money with Money Hub
+# Making money with Money Core
 
 Two income streams are built in:
 
@@ -81,4 +81,4 @@ The app downloads it on start, caches it for offline use, and falls back to the 
 ### Compliance (US)
 - **FTC:** the disclosure must sit next to the link (done) and be clear. Edit `disclosure` in the JSON if a partner needs specific wording.
 - Keep calculator results **independent of offers**. Never change numbers to favour a partner.
-- Money Hub is educational. Offers must not be framed as personal advice ("you should open X").
+- Money Core is educational. Offers must not be framed as personal advice ("you should open X").
