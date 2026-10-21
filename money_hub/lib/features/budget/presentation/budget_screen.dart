@@ -34,7 +34,13 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
   Future<void> _addCategory(int groupId, String groupName) async {
     final name = await showDialog<String>(
       context: context,
-      builder: (_) => _NameDialog(title: 'New category in $groupName', label: 'Category name'),
+      builder: (_) => _NameDialog(
+        title: 'New category in $groupName',
+        label: 'Category name',
+        helper: 'A budget envelope for setting money aside. To track due dates and get '
+            'reminders, add the bill in Bills & subscriptions instead.',
+        onOpenBills: () => context.push(Routes.bills),
+      ),
     );
     if (name == null || name.trim().isEmpty) return;
     await ref.read(budgetRepositoryProvider).addCategory(groupId: groupId, name: name.trim());
@@ -93,7 +99,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
                                 avatar: const Icon(Icons.receipt_long_outlined, size: 18),
                                 label: Text(totals == null || totals.billCount + totals.subscriptionCount == 0
                                     ? 'Bills & subscriptions'
-                                    : 'Bills · ${fmtMoney(totals.monthlyCents / 100)}/mo'),
+                                    : 'Bills & subscriptions · ${fmtMoney(totals.monthlyCents / 100)}/mo'),
                                 onPressed: () => context.push(Routes.bills),
                               ),
                               ActionChip(
@@ -113,7 +119,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
                             SectionTitle(
                               g.name,
                               action: IconButton(
-                                tooltip: 'Add category',
+                                tooltip: 'Add a budget category to ${g.name}',
                                 icon: const Icon(Icons.add_circle_outline),
                                 onPressed: () => _addCategory(g.id, g.name),
                               ),
@@ -214,9 +220,13 @@ class _IncomeHint extends StatelessWidget {
 
 /// Simple text prompt that returns the entered text.
 class _NameDialog extends StatefulWidget {
-  const _NameDialog({required this.title, required this.label});
+  const _NameDialog({required this.title, required this.label, this.helper, this.onOpenBills});
   final String title;
   final String label;
+  final String? helper;
+
+  /// When set, shows a link that closes the dialog and opens the bill tracker.
+  final VoidCallback? onOpenBills;
 
   @override
   State<_NameDialog> createState() => _NameDialogState();
@@ -234,14 +244,32 @@ class _NameDialogState extends State<_NameDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
         title: Text(widget.title),
-        content: TextField(
-          controller: _c,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: InputDecoration(labelText: widget.label),
-          onSubmitted: (v) => Navigator.pop(context, v),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: _c,
+              autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(labelText: widget.label),
+              onSubmitted: (v) => Navigator.pop(context, v),
+            ),
+            if (widget.helper != null) ...[
+              const SizedBox(height: 12),
+              Text(widget.helper!, style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ],
         ),
         actions: [
+          if (widget.onOpenBills != null)
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                widget.onOpenBills!();
+              },
+              child: const Text('Bills & subscriptions'),
+            ),
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           FilledButton(onPressed: () => Navigator.pop(context, _c.text), child: const Text('Add')),
         ],
