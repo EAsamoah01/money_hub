@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/app_config.dart';
 import '../../../core/database/app_database.dart';
 import '../../../core/state/app_state.dart';
 
@@ -28,7 +29,7 @@ class OnboardingScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Money Hub', style: Theme.of(context).textTheme.headlineMedium),
+              Text(AppConfig.appName, style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 12),
               const Text('Budget, crush debt, track net worth and learn, all in one place. '
                   'Your data stays on your device.'),

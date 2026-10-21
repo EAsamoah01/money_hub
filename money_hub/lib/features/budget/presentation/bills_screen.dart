@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 
 import '../../../core/database/app_database.dart';
 import '../../../core/router/routes.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/utils/money_format.dart';
 import '../../../core/widgets/gradient_header.dart';
+import '../../settings/presentation/settings_screens.dart' show setReminders;
 import '../data/bills_repository.dart';
 import '../domain/budget_math.dart';
 
@@ -74,6 +76,19 @@ class BillsScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        if (NotificationService.supported && !ref.watch(remindersEnabledProvider))
+                          Card(
+                            margin: const EdgeInsets.only(top: 4, bottom: 4),
+                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            child: ListTile(
+                              leading: const Icon(Icons.notifications_active_outlined),
+                              title: const Text('Get reminded before bills are due'),
+                              trailing: FilledButton.tonal(
+                                onPressed: () => setReminders(context, ref, true),
+                                child: const Text('Turn on'),
+                              ),
+                            ),
+                          ),
                         if (soon.isNotEmpty) const SectionTitle('Due in the next 7 days'),
                         for (final b in soon) BillTile(bill: b),
                         if (later.isNotEmpty) const SectionTitle('Later'),

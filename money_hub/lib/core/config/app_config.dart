@@ -12,6 +12,9 @@
 // With no keys set, the app uses a demo store (debug builds only).
 
 abstract final class AppConfig {
+  /// Shown in the app, store listing and on the home screen.
+  static const appName = 'Money Core';
+
   /// RevenueCat public SDK keys (Project settings → API keys in RevenueCat).
   static const revenueCatGoogleKey = String.fromEnvironment('RC_GOOGLE_KEY');
   static const revenueCatAppleKey = String.fromEnvironment('RC_APPLE_KEY');

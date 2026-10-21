@@ -92,7 +92,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(icon: const Icon(Icons.close), onPressed: _leave),
-            title: const Text('Money Hub Pro'),
+            title: const Text('${AppConfig.appName} Pro'),
           ),
           body: Center(
             child: ConstrainedBox(
@@ -115,7 +115,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         const SizedBox(height: 12),
         Text("You're a Pro member", textAlign: TextAlign.center, style: t.textTheme.headlineSmall),
         const SizedBox(height: 8),
-        const Text('Thanks for supporting Money Hub. Every Pro feature is unlocked.', textAlign: TextAlign.center),
+        const Text('Thanks for supporting ${AppConfig.appName}. Every Pro feature is unlocked.', textAlign: TextAlign.center),
         const SizedBox(height: 28),
         FilledButton(onPressed: _leave, child: const Text('Continue')),
         const SizedBox(height: 8),

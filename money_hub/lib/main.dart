@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/database/app_database.dart';
+import 'core/services/app_lock.dart';
+import 'core/services/notification_service.dart';
 import 'core/services/purchases_service.dart';
 import 'core/state/app_state.dart';
 
@@ -13,8 +15,12 @@ Future<void> main() async {
   // Open the database once and read the settings the router needs at startup.
   final db = AppDatabase();
   var onboarded = false;
+  var remindersOn = false;
+  var lockOn = false;
   try {
     onboarded = await db.getSetting(kOnboardingDoneKey) == 'true';
+    remindersOn = await db.getSetting(kRemindersEnabledKey) == 'true';
+    lockOn = await db.getSetting(kAppLockKey) == 'true';
   } catch (e) {
     // On web this usually means web/sqlite3.wasm or web/drift_worker.js is
     // missing or doesn't match the package versions. Run tool/setup_web_db.ps1.
@@ -35,6 +41,8 @@ Future<void> main() async {
     purchasesServiceProvider.overrideWithValue(purchases),
     onboardingCompleteProvider.overrideWith((ref) => onboarded),
     isProProvider.overrideWith((ref) => isPro),
+    remindersEnabledProvider.overrideWith((ref) => remindersOn),
+    appLockEnabledProvider.overrideWith((ref) => lockOn),
   ]);
 
   // Keep the app's Pro flag in sync with the store (purchase, restore, expiry).

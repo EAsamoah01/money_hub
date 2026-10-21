@@ -5,7 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/app_config.dart';
+import '../../../core/database/app_database.dart';
 import '../../../core/router/routes.dart';
+import '../../../core/services/app_lock.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/services/offers_service.dart';
 import '../../../core/services/purchases_service.dart';
 import '../../../core/state/app_state.dart';
@@ -91,6 +94,29 @@ class SettingsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    const SectionTitle('Reminders & security'),
+                    Card(
+                      child: Column(
+                        children: [
+                          SwitchListTile(
+                            secondary: const Icon(Icons.notifications_active_outlined),
+                            title: const Text('Bill reminders'),
+                            subtitle: Text(NotificationService.supported
+                                ? 'A notification before each bill is due and before free trials end'
+                                : 'Available in the Android and iPhone app'),
+                            value: ref.watch(remindersEnabledProvider),
+                            onChanged: NotificationService.supported ? (v) => setReminders(context, ref, v) : null,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.fingerprint),
+                            title: const Text('App lock'),
+                            subtitle: Text(ref.watch(appLockEnabledProvider) ? 'On' : 'Off'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => context.push(Routes.settingsSecurity),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SectionTitle('Your data'),
                     Card(
                       child: Column(
@@ -100,12 +126,6 @@ class SettingsScreen extends ConsumerWidget {
                             title: const Text('Backup & export'),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () => context.push(Routes.settingsBackup),
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.fingerprint),
-                            title: const Text('App lock'),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => context.push(Routes.settingsSecurity),
                           ),
                         ],
                       ),
@@ -131,7 +151,7 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Money Hub is for education only and is not financial, tax or legal advice. '
+                      '${AppConfig.appName} is for education only and is not financial, tax or legal advice. '
                       'Your budget and debt data stays on this device.\n\n$disclosure',
                       style: t.textTheme.bodySmall,
                     ),
@@ -154,10 +174,79 @@ class BackupScreen extends StatelessWidget {
       const PlaceholderScreen(title: 'Backup & export', details: 'CSV export and backup file. Coming soon.');
 }
 
-class SecurityScreen extends StatelessWidget {
+class SecurityScreen extends ConsumerStatefulWidget {
   const SecurityScreen({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const PlaceholderScreen(title: 'App lock', details: 'Face ID / fingerprint when the app opens. Coming soon.');
+  ConsumerState<SecurityScreen> createState() => _SecurityScreenState();
+}
+
+class _SecurityScreenState extends ConsumerState<SecurityScreen> {
+  late final Future<bool> _available = ref.read(appLockServiceProvider).isAvailable();
+
+  Future<void> _toggle(bool on) async {
+    final messenger = ScaffoldMessenger.of(context);
+    // Confirm the user can actually unlock before turning the lock on.
+    if (on && !await ref.read(appLockServiceProvider).authenticate()) {
+      messenger.showSnackBar(const SnackBar(content: Text('App lock not turned on.')));
+      return;
+    }
+    await ref.read(databaseProvider).setSetting(kAppLockKey, '$on');
+    ref.read(appLockEnabledProvider.notifier).state = on;
+    messenger.showSnackBar(SnackBar(content: Text(on ? 'App lock is on' : 'App lock is off')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = ref.watch(appLockEnabledProvider);
+    return Scaffold(
+      appBar: AppBar(title: const Text('App lock')),
+      body: FutureBuilder<bool>(
+        future: _available,
+        builder: (context, snap) {
+          final available = snap.data ?? false;
+          return ListView(
+            padding: const EdgeInsets.only(bottom: 24),
+            children: [
+              GradientHeader(
+                title: enabled ? 'Locked with your fingerprint' : 'App lock is off',
+                subtitle: 'Ask for your fingerprint, face or phone PIN when ${AppConfig.appName} opens '
+                    'or returns after ${AppLockGate.relockAfter.inSeconds} seconds away.',
+                icon: Icons.fingerprint,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Card(
+                  child: SwitchListTile(
+                    title: const Text('Require unlock'),
+                    subtitle: Text(snap.connectionState != ConnectionState.done
+                        ? 'Checking this device…'
+                        : available
+                            ? 'Uses the screen lock already set up on this device'
+                            : 'This device has no fingerprint, face or PIN lock set up'),
+                    value: enabled,
+                    onChanged: available ? _toggle : null,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Turns reminders on (asking for notification permission) or off.
+Future<void> setReminders(BuildContext context, WidgetRef ref, bool on) async {
+  final messenger = ScaffoldMessenger.of(context);
+  if (on && !await ref.read(notificationServiceProvider).requestPermission()) {
+    messenger.showSnackBar(const SnackBar(
+      content: Text('Notifications are blocked. Allow them for ${AppConfig.appName} in your phone settings.'),
+    ));
+    return;
+  }
+  await ref.read(databaseProvider).setSetting(kRemindersEnabledKey, '$on');
+  ref.read(remindersEnabledProvider.notifier).state = on;
+  messenger.showSnackBar(SnackBar(content: Text(on ? 'Bill reminders are on' : 'Bill reminders are off')));
 }

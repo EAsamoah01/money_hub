@@ -56,6 +56,7 @@ class AppDatabase extends _$AppDatabase {
   /// (OPFS or IndexedDB). That needs web/sqlite3.wasm and
   /// web/drift_worker.js; run tool/setup_web_db.ps1 to download them.
   static QueryExecutor _openConnection() => driftDatabase(
+        // Don't rename: changing this would start users with an empty database.
         name: 'money_hub',
         web: DriftWebOptions(
           sqlite3Wasm: Uri.parse('sqlite3.wasm'),
