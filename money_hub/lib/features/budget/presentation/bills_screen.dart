@@ -84,6 +84,7 @@ class BillsScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const _RemindersCard(),
+                        const _TrackerHint(),
                         if (soon.isNotEmpty) const SectionTitle('Due in the next 7 days'),
                         for (final b in soon) BillTile(bill: b),
                         if (later.isNotEmpty) const SectionTitle('Later'),
@@ -194,8 +195,8 @@ class _Empty extends StatelessWidget {
             Text('Never miss a bill', style: t.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             Text(
-              'Add rent, phone, streaming and other recurring costs. See what\'s due and what '
-              'your subscriptions really cost each year.',
+              'Add rent, phone, streaming and other recurring costs. See what\'s due, get a '
+              'reminder before each due date, and see what your subscriptions really cost each year.',
               textAlign: TextAlign.center,
               style: t.textTheme.bodyLarge,
             ),
@@ -207,6 +208,33 @@ class _Empty extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Explains how this tracker differs from the "Bills" group on the Budget tab.
+class _TrackerHint extends StatelessWidget {
+  const _TrackerHint();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline, size: 18, color: t.colorScheme.onSurfaceVariant),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Bills here get due-date reminders. The Bills group on the Budget screen is '
+              'where you set money aside to pay them.',
+              style: t.textTheme.bodySmall?.copyWith(color: t.colorScheme.onSurfaceVariant),
+            ),
+          ),
+        ],
       ),
     );
   }
