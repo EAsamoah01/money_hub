@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/database/app_database.dart';
+import 'core/services/purchases_service.dart';
 import 'core/state/app_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Later: await Firebase.initializeApp(); await Purchases.configure(...);
 
   // Open the database once and read the settings the router needs at startup.
   final db = AppDatabase();
@@ -21,11 +21,24 @@ Future<void> main() async {
     debugPrint('Could not open the database: $e');
   }
 
-  runApp(ProviderScope(
-    overrides: [
-      databaseProvider.overrideWithValue(db),
-      onboardingCompleteProvider.overrideWith((ref) => onboarded),
-    ],
-    child: const MoneyHubApp(),
-  ));
+  // Subscriptions: RevenueCat if a key is configured, otherwise the demo store.
+  final purchases = await createPurchasesService(db);
+  var isPro = false;
+  try {
+    isPro = await purchases.isPro();
+  } catch (e) {
+    debugPrint('Could not read Pro status: $e');
+  }
+
+  final container = ProviderContainer(overrides: [
+    databaseProvider.overrideWithValue(db),
+    purchasesServiceProvider.overrideWithValue(purchases),
+    onboardingCompleteProvider.overrideWith((ref) => onboarded),
+    isProProvider.overrideWith((ref) => isPro),
+  ]);
+
+  // Keep the app's Pro flag in sync with the store (purchase, restore, expiry).
+  purchases.proChanges.listen((pro) => container.read(isProProvider.notifier).state = pro);
+
+  runApp(UncontrolledProviderScope(container: container, child: const MoneyHubApp()));
 }

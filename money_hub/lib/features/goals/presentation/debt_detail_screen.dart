@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../core/database/app_database.dart';
 import '../../../core/router/routes.dart';
 import '../../../core/utils/money_format.dart';
+import '../../../core/widgets/affiliate_slot.dart';
 import '../../../core/widgets/gradient_header.dart';
 import '../data/debts_repository.dart';
 import '../domain/debt_payoff.dart';
@@ -164,6 +165,7 @@ class DebtDetailScreen extends ConsumerWidget {
                             ),
                           ),
                         ],
+                        if (!debt.isPaidOff) const AffiliateSlot(placement: 'goals.debt.detail', margin: EdgeInsets.only(top: 12)),
                         SectionTitle('Payments (${payments.length})'),
                         if (payments.isEmpty)
                           Padding(
