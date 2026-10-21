@@ -40,7 +40,17 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppConfig.appName),
+        titleSpacing: 16,
+        title: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(9),
+              child: Image.asset('assets/branding/icon.png', width: 34, height: 34, cacheWidth: 136),
+            ),
+            const SizedBox(width: 12),
+            const Text(AppConfig.appName, style: TextStyle(fontWeight: FontWeight.w700)),
+          ],
+        ),
         actions: [
           IconButton(
             tooltip: 'Settings',
