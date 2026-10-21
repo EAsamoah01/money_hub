@@ -25,7 +25,7 @@ class BillsScreen extends ConsumerWidget {
     final today = DateTime.now();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Bills & subscriptions')),
+      appBar: AppBar(title: const Text('Bills & Alerts')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(Routes.billNew),
         icon: const Icon(Icons.add),
