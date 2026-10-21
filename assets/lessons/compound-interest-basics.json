@@ -1,0 +1,26 @@
+{
+  "id": "compound-interest-basics",
+  "title": "Compound interest: why starting early wins",
+  "track": "investing-101",
+  "order": 1,
+  "minutes": 4,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "Compound interest means you earn returns on your past returns, not just on the money you put in." },
+    { "type": "text", "body": "Example: $200 a month for 30 years at a 7% average return grows to roughly $240,000, of which only $72,000 is money you contributed." },
+    {
+      "type": "calculatorLink",
+      "label": "Try it with your own numbers",
+      "calculator": "compound-interest",
+      "prefill": { "principal": "0", "monthly": "200", "rate": "7", "years": "30" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What does compound interest earn returns on?",
+      "options": ["Only your deposits", "Your deposits and past returns", "Only past returns"],
+      "answer": 1
+    }
+  ],
+  "disclaimer": "Educational example only. Returns are not guaranteed."
+}

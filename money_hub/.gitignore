@@ -49,3 +49,6 @@ app.*.map.json
 
 # Local keys for --dart-define-from-file (never commit)
 env.json
+
+# Build logs
+*_log.txt
