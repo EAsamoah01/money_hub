@@ -35,7 +35,14 @@ class BillsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (bills) {
-          if (bills.isEmpty) return const _Empty();
+          if (bills.isEmpty) {
+            return const Column(
+              children: [
+                Padding(padding: EdgeInsets.fromLTRB(16, 8, 16, 0), child: _RemindersCard()),
+                Expanded(child: _Empty()),
+              ],
+            );
+          }
           final active = bills.where((b) => b.isActive).toList();
           final soon = active.where((b) => daysUntil(b.nextDueDate, today) <= 7).toList();
           final later = active.where((b) => daysUntil(b.nextDueDate, today) > 7).toList();
@@ -76,19 +83,7 @@ class BillsScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (NotificationService.supported && !ref.watch(remindersEnabledProvider))
-                          Card(
-                            margin: const EdgeInsets.only(top: 4, bottom: 4),
-                            color: Theme.of(context).colorScheme.secondaryContainer,
-                            child: ListTile(
-                              leading: const Icon(Icons.notifications_active_outlined),
-                              title: const Text('Get reminded before bills are due'),
-                              trailing: FilledButton.tonal(
-                                onPressed: () => setReminders(context, ref, true),
-                                child: const Text('Turn on'),
-                              ),
-                            ),
-                          ),
+                        const _RemindersCard(),
                         if (soon.isNotEmpty) const SectionTitle('Due in the next 7 days'),
                         for (final b in soon) BillTile(bill: b),
                         if (later.isNotEmpty) const SectionTitle('Later'),
@@ -153,6 +148,29 @@ class BillTile extends StatelessWidget {
             fmtMoney(bill.amountCents / 100, cents: true),
             style: t.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Prompt to switch on bill reminders (phones only; hidden once they're on).
+class _RemindersCard extends ConsumerWidget {
+  const _RemindersCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (!NotificationService.supported || ref.watch(remindersEnabledProvider)) return const SizedBox.shrink();
+    final cs = Theme.of(context).colorScheme;
+    return Card(
+      margin: const EdgeInsets.only(top: 4, bottom: 4),
+      color: cs.secondaryContainer,
+      child: ListTile(
+        leading: Icon(Icons.notifications_active_outlined, color: cs.onSecondaryContainer),
+        title: Text('Get reminded before bills are due', style: TextStyle(color: cs.onSecondaryContainer)),
+        trailing: FilledButton.tonal(
+          onPressed: () => setReminders(context, ref, true),
+          child: const Text('Turn on'),
         ),
       ),
     );
