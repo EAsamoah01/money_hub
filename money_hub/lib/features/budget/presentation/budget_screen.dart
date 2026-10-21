@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/router/routes.dart';
 import '../../../core/utils/money_format.dart';
+import '../../../core/widgets/affiliate_slot.dart';
 import '../../../core/widgets/gradient_header.dart';
 import '../data/bills_repository.dart';
 import '../data/budget_repository.dart';
@@ -123,6 +124,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
                                 onTap: () => context.push(Loc.budgetCategory(line.categoryId, month: _month)),
                               ),
                           ],
+                          const AffiliateSlot(placement: 'budget.overview', margin: EdgeInsets.only(top: 18)),
                           if (summary.uncategorizedSpentCents > 0) ...[
                             const SectionTitle('Other spending'),
                             Card(

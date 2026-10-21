@@ -10,9 +10,14 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../core/config/app_config.dart';
 import '../../../../core/router/routes.dart';
+import '../../../../core/state/app_state.dart';
 import '../../../../core/utils/money_format.dart';
+import '../../../../core/widgets/affiliate_slot.dart';
 import '../../data/saved_calculations_repository.dart';
+
+export '../../../../core/widgets/affiliate_slot.dart' show AffiliateSlot;
 
 // ───────────────────────── Form state ─────────────────────────
 
@@ -367,6 +372,18 @@ class CalcFooter extends ConsumerWidget {
   }
 
   Future<void> _pin(BuildContext context, WidgetRef ref) async {
+    // Free plan: a few pins. Pro: unlimited.
+    final pinnedCount = (ref.read(pinnedResultsProvider).valueOrNull ?? const []).length;
+    if (!ref.read(isProProvider) && pinnedCount >= AppConfig.freePinLimit) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Free accounts can pin ${AppConfig.freePinLimit} results. Unpin one or go Pro.'),
+        action: SnackBarAction(
+          label: 'Go Pro',
+          onPressed: () => context.push(Loc.paywall(from: GoRouterState.of(context).uri.toString())),
+        ),
+      ));
+      return;
+    }
     try {
       await ref.read(savedCalculationsRepositoryProvider).pin(
             calculator: calculator!,
@@ -425,33 +442,6 @@ class CalcFooter extends ConsumerWidget {
           style: small,
         ),
       ],
-    );
-  }
-}
-
-/// Where a partner offer will render once Remote Config is wired up.
-/// Shows a dashed placeholder in debug builds and nothing in release builds,
-/// so an empty slot can never ship by accident.
-class AffiliateSlot extends StatelessWidget {
-  const AffiliateSlot({super.key, required this.placement});
-  final String placement;
-
-  @override
-  Widget build(BuildContext context) {
-    if (kReleaseMode) return const SizedBox.shrink();
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        border: Border.all(color: cs.outlineVariant),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        'Partner offer slot · "$placement"\n'
-        'Loaded from Remote Config later, always with an affiliate disclosure.',
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
     );
   }
 }
