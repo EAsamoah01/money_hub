@@ -38,7 +38,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
         title: 'New category in $groupName',
         label: 'Category name',
         helper: 'A budget envelope for setting money aside. To track due dates and get '
-            'reminders, add the bill in Bills & subscriptions instead.',
+            'reminders, add the bill in Bills & Alerts instead.',
         onOpenBills: () => context.push(Routes.bills),
       ),
     );
@@ -98,8 +98,8 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
                               ActionChip(
                                 avatar: const Icon(Icons.receipt_long_outlined, size: 18),
                                 label: Text(totals == null || totals.billCount + totals.subscriptionCount == 0
-                                    ? 'Bills & subscriptions'
-                                    : 'Bills & subscriptions · ${fmtMoney(totals.monthlyCents / 100)}/mo'),
+                                    ? 'Bills & Alerts'
+                                    : 'Bills & Alerts · ${fmtMoney(totals.monthlyCents / 100)}/mo'),
                                 onPressed: () => context.push(Routes.bills),
                               ),
                               ActionChip(
@@ -268,7 +268,7 @@ class _NameDialogState extends State<_NameDialog> {
                 Navigator.pop(context);
                 widget.onOpenBills!();
               },
-              child: const Text('Bills & subscriptions'),
+              child: const Text('Bills & Alerts'),
             ),
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           FilledButton(onPressed: () => Navigator.pop(context, _c.text), child: const Text('Add')),
