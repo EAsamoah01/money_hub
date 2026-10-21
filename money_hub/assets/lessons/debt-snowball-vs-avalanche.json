@@ -1,0 +1,46 @@
+{
+  "id": "debt-snowball-vs-avalanche",
+  "title": "Snowball vs avalanche: two ways to crush debt",
+  "track": "debt-101",
+  "trackTitle": "Getting out of debt",
+  "trackOrder": 3,
+  "order": 1,
+  "minutes": 4,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "Both methods work the same way at the start. You pay the minimum on every debt, then put every extra dollar toward one target debt. When that debt is gone, its payment rolls into the next one, so your payoff power keeps growing." },
+    { "type": "bullets", "items": [
+      "Snowball: target the smallest balance first. You clear whole debts sooner, which keeps many people motivated.",
+      "Avalanche: target the highest interest rate first. It costs the same or less in total interest."
+    ] },
+    { "type": "callout", "body": "The best plan is the one you'll stick with. If quick wins keep you going, snowball is a fine choice. If you're motivated by saving the most money, go avalanche." },
+    { "type": "text", "body": "Whichever you pick, stop adding new debt while you pay it down, and keep a small emergency fund so a surprise bill doesn't go on the credit card." },
+    {
+      "type": "calculatorLink",
+      "label": "Compare both with your own debts",
+      "calculator": "debt-payoff",
+      "prefill": { "extra": "200" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Which method usually costs the least total interest?",
+      "options": ["Snowball", "Avalanche", "They always cost the same"],
+      "answer": 1,
+      "why": "Avalanche attacks the most expensive debt first, so less interest piles up."
+    },
+    {
+      "q": "With the snowball method, which debt do you target first?",
+      "options": ["The one with the highest rate", "The one with the smallest balance", "The oldest one"],
+      "answer": 1,
+      "why": "Snowball goes smallest balance first for quick wins."
+    },
+    {
+      "q": "When a debt is paid off, what happens to its monthly payment?",
+      "options": ["You spend it", "It rolls over to the next debt", "It goes to the minimums only"],
+      "answer": 1,
+      "why": "Rolling the freed-up payment into the next debt is what makes both methods speed up over time."
+    }
+  ],
+  "disclaimer": "Educational example only, not financial advice."
+}

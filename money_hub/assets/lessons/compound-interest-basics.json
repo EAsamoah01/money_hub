@@ -1,0 +1,47 @@
+{
+  "id": "compound-interest-basics",
+  "title": "Compound interest: why starting early wins",
+  "track": "investing-101",
+  "trackTitle": "Investing 101",
+  "trackOrder": 2,
+  "order": 1,
+  "minutes": 4,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "Compound interest means you earn returns on your past returns, not just on the money you put in. Each year's growth gets added to the pile, and next year the whole bigger pile grows." },
+    { "type": "text", "body": "Example: invest $200 a month for 30 years at a 7% average yearly return and you'd end up with about $244,000. Only $72,000 of that is money you put in. The other $172,000 is growth." },
+    { "type": "callout", "body": "Rule of 72: divide 72 by the yearly return to estimate how long money takes to double. At 7%, that's roughly 10 years." },
+    { "type": "bullets", "items": [
+      "Time matters more than the amount. Starting 10 years earlier can beat investing twice as much later.",
+      "Small fees compound too, against you. A 1% yearly fee takes a big bite over decades.",
+      "Returns aren't steady in real life. 7% is a long-run average, with bad years mixed in."
+    ] },
+    {
+      "type": "calculatorLink",
+      "label": "Try it with your own numbers",
+      "calculator": "compound-interest",
+      "prefill": { "principal": "0", "monthly": "200", "rate": "7", "years": "30" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What does compound interest earn returns on?",
+      "options": ["Only the money you deposit", "Your deposits and your past returns", "Only your past returns"],
+      "answer": 1,
+      "why": "Growth gets added to your balance, so future returns are earned on deposits and past growth together."
+    },
+    {
+      "q": "Using the Rule of 72, about how long does money take to double at 8% a year?",
+      "options": ["About 5 years", "About 9 years", "About 18 years"],
+      "answer": 1,
+      "why": "72 ÷ 8 = 9 years."
+    },
+    {
+      "q": "Which usually makes the biggest difference to your final balance?",
+      "options": ["Starting early", "Picking the perfect day to invest", "Checking your account often"],
+      "answer": 0,
+      "why": "More years means more rounds of compounding. Timing the market is very hard, even for professionals."
+    }
+  ],
+  "disclaimer": "Educational example only, not financial advice. Returns are not guaranteed and can be negative."
+}

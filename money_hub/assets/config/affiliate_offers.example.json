@@ -1,0 +1,24 @@
+{
+  "_comment": "Shape for Firebase Remote Config key 'affiliate_offers'. Swap offers without an app release. Always show the disclosure.",
+  "disclosure": "We may earn a commission if you sign up through these links.",
+  "placements": {
+    "tools.compound-interest.result": {
+      "title": "Start investing with as little as $1",
+      "partner": "PARTNER_NAME",
+      "url": "https://partner.example.com/?ref=YOUR_ID&utm_source=moneyhub&utm_medium=app&utm_campaign=compound",
+      "enabled": true
+    },
+    "goals.debt.detail": {
+      "title": "See if a 0% balance transfer could save you interest",
+      "partner": "PARTNER_NAME",
+      "url": "https://partner.example.com/?ref=YOUR_ID&utm_campaign=debt",
+      "enabled": true
+    },
+    "budget.emergency-fund": {
+      "title": "Earn more on your emergency fund",
+      "partner": "PARTNER_NAME",
+      "url": "https://partner.example.com/?ref=YOUR_ID&utm_campaign=hysa",
+      "enabled": false
+    }
+  }
+}

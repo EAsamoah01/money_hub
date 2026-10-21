@@ -1,0 +1,47 @@
+{
+  "id": "fire-and-the-4-percent-rule",
+  "title": "FIRE and the 4% rule",
+  "track": "investing-101",
+  "trackTitle": "Investing 101",
+  "trackOrder": 2,
+  "order": 3,
+  "minutes": 4,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "FIRE stands for Financial Independence, Retire Early. The idea: save and invest enough that your investments can cover your living costs, so work becomes optional." },
+    { "type": "callout", "body": "Your FIRE number ≈ yearly spending × 25. Spend $40,000 a year and you'd aim for about $1,000,000 invested." },
+    { "type": "text", "body": "The ×25 comes from the 4% rule: withdraw 4% of your portfolio in year one, then adjust that amount for inflation each year. Historical US studies found this lasted at least 30 years in most past market periods." },
+    { "type": "bullets", "items": [
+      "It's a rule of thumb, not a guarantee. Future returns may differ from the past.",
+      "Retiring very early means your money may need to last 40 to 50 years, so many people plan with a lower rate, like 3.5%.",
+      "Cutting spending helps twice: you need a smaller FIRE number and you can save more toward it."
+    ] },
+    {
+      "type": "calculatorLink",
+      "label": "Find your FIRE number",
+      "calculator": "fire",
+      "prefill": { "spend": "40000", "wr": "4" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "Using the 4% rule, what's the FIRE number for $50,000 of yearly spending?",
+      "options": ["$200,000", "$1,250,000", "$5,000,000"],
+      "answer": 1,
+      "why": "$50,000 × 25 = $1,250,000."
+    },
+    {
+      "q": "Why might an early retiree use a withdrawal rate lower than 4%?",
+      "options": ["To pay less tax", "Their money may need to last more than 30 years", "Banks require it"],
+      "answer": 1,
+      "why": "The 4% rule was tested over about 30 years. Longer retirements carry more risk."
+    },
+    {
+      "q": "How does cutting yearly spending affect your FIRE plan?",
+      "options": ["Raises your FIRE number", "Lowers your FIRE number and frees money to invest", "Makes no difference"],
+      "answer": 1,
+      "why": "Lower spending shrinks the target and boosts your savings, a double win."
+    }
+  ],
+  "disclaimer": "Educational content only, not financial advice. Past results don't guarantee future returns."
+}

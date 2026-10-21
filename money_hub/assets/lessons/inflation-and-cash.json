@@ -1,0 +1,47 @@
+{
+  "id": "inflation-and-cash",
+  "title": "Inflation: why cash slowly loses value",
+  "track": "basics",
+  "trackTitle": "Money basics",
+  "trackOrder": 1,
+  "order": 2,
+  "minutes": 3,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "Inflation is the general rise in prices over time. When prices rise, each dollar buys a little less. Money sitting in cash keeps the same number on the screen but quietly loses buying power." },
+    { "type": "text", "body": "Example: at 3% inflation, $10,000 kept in cash for 20 years will only buy what about $5,540 buys today." },
+    { "type": "callout", "body": "Rule of 72 works here too: 72 ÷ 3 = 24, so at 3% inflation prices roughly double, and cash buys about half as much, in around 24 years." },
+    { "type": "bullets", "items": [
+      "Cash is still right for short-term needs and your emergency fund.",
+      "For long-term goals, money usually needs to grow faster than inflation to keep its value.",
+      "Compare savings rates to inflation. A 1% account during 3% inflation loses buying power."
+    ] },
+    {
+      "type": "calculatorLink",
+      "label": "See what inflation does to your cash",
+      "calculator": "inflation",
+      "prefill": { "amount": "10000", "rate": "3", "years": "20" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What does inflation do to money held as cash?",
+      "options": ["Increases its buying power", "Reduces its buying power", "Has no effect"],
+      "answer": 1,
+      "why": "The balance stays the same but prices go up, so it buys less."
+    },
+    {
+      "q": "At about 3% inflation, roughly how long until prices double?",
+      "options": ["About 8 years", "About 24 years", "About 50 years"],
+      "answer": 1,
+      "why": "72 ÷ 3 = 24 years."
+    },
+    {
+      "q": "Your savings account pays 1% and inflation is 3%. What happens to your buying power?",
+      "options": ["It grows by 1% a year", "It shrinks by about 2% a year", "It stays the same"],
+      "answer": 1,
+      "why": "Your money grows 1% but prices grow 3%, so you fall behind by about 2% a year."
+    }
+  ],
+  "disclaimer": "Educational content only, not financial advice."
+}

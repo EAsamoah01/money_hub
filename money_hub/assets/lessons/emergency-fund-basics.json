@@ -1,0 +1,42 @@
+{
+  "id": "emergency-fund-basics",
+  "title": "Your emergency fund: the first money goal",
+  "track": "basics",
+  "trackTitle": "Money basics",
+  "trackOrder": 1,
+  "order": 1,
+  "minutes": 3,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "An emergency fund is cash set aside only for real surprises: a job loss, a car repair, a medical bill. It keeps one bad month from turning into credit card debt." },
+    { "type": "callout", "body": "A common target is 3 to 6 months of essential expenses: rent or mortgage, food, utilities, insurance, transport and minimum debt payments." },
+    { "type": "bullets", "items": [
+      "Start small. A first goal of $500 to $1,000 already covers many surprise bills.",
+      "Keep it separate from your spending account so it doesn't get used by accident.",
+      "Keep it easy to reach and safe, like a high-yield savings account, not in stocks.",
+      "Aim for the higher end if your income is irregular or you're the only earner."
+    ] },
+    { "type": "text", "body": "Once your emergency fund is in place, you can focus extra money on paying off high-interest debt and investing." }
+  ],
+  "quiz": [
+    {
+      "q": "What is a common emergency fund target?",
+      "options": ["One week of expenses", "3 to 6 months of essential expenses", "5 years of income"],
+      "answer": 1,
+      "why": "3 to 6 months of essentials covers most job searches and big surprise bills."
+    },
+    {
+      "q": "Where is a good place to keep an emergency fund?",
+      "options": ["In individual stocks", "In a separate, easy-access savings account", "As cash in your wallet"],
+      "answer": 1,
+      "why": "It should be safe and quick to reach. Stocks can drop right when you need the money."
+    },
+    {
+      "q": "Which of these is a real emergency?",
+      "options": ["A sale on a new phone", "A car repair you need to get to work", "A holiday trip"],
+      "answer": 1,
+      "why": "Emergency money is for necessary, unexpected costs, not planned wants."
+    }
+  ],
+  "disclaimer": "Educational content only, not financial advice."
+}

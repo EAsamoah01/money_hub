@@ -1,0 +1,48 @@
+{
+  "id": "index-funds-101",
+  "title": "Index funds: owning the whole market",
+  "track": "investing-101",
+  "trackTitle": "Investing 101",
+  "trackOrder": 2,
+  "order": 2,
+  "minutes": 4,
+  "youtubeId": "REPLACE_WITH_YOUR_VIDEO_ID",
+  "sections": [
+    { "type": "text", "body": "An index fund buys every company in a market index, such as the S&P 500, which tracks about 500 large US companies. Instead of guessing which stocks will win, you own a small slice of all of them." },
+    { "type": "bullets", "items": [
+      "Diversification: one company failing has only a small effect on you.",
+      "Low cost: no team of stock pickers to pay, so yearly fees can be tiny.",
+      "Simple: you don't need to research or trade individual stocks."
+    ] },
+    { "type": "callout", "body": "Fees matter. On $100,000, a 0.03% fee costs about $30 a year. A 1% fee costs $1,000 a year, and that gap compounds over decades." },
+    { "type": "text", "body": "Over long periods, most actively managed funds have trailed their index after fees. That's a big reason many investors choose low-cost index funds for the core of their portfolio." },
+    { "type": "text", "body": "Index funds still go up and down with the market. They're built for long-term money you won't need for years, not for your emergency fund." },
+    {
+      "type": "calculatorLink",
+      "label": "See what a past investment could be worth",
+      "calculator": "what-if",
+      "prefill": { "amount": "1000", "rate": "10" }
+    }
+  ],
+  "quiz": [
+    {
+      "q": "What does an index fund do?",
+      "options": ["Picks a few stocks it thinks will win", "Buys all the companies in an index", "Only holds cash"],
+      "answer": 1,
+      "why": "It tracks an index by owning the companies in it."
+    },
+    {
+      "q": "On $100,000, how much does a 1% yearly fee cost?",
+      "options": ["$10", "$100", "$1,000"],
+      "answer": 2,
+      "why": "1% of $100,000 is $1,000 every year."
+    },
+    {
+      "q": "Can an index fund lose value?",
+      "options": ["No, never", "Yes, it moves with the market", "Only if the fund company closes"],
+      "answer": 1,
+      "why": "Diversification lowers single-company risk, but the whole market can still fall."
+    }
+  ],
+  "disclaimer": "Educational content only, not financial advice. Mentioning an index is not a recommendation to buy any product."
+}
