@@ -1,0 +1,23 @@
+# Money Core AI proxy — a Cloudflare Worker that sits between the app and
+# Claude. The app never sees the Anthropic key. Deploy steps: see ../AI.md
+name = "money-core-ai"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+MODEL = "claude-haiku-5-5"
+PRO_ENTITLEMENT = "pro"
+# Most AI requests one Pro user can make per day (protects your bill).
+DAILY_LIMIT = "100"
+
+# Daily usage counter. Create it once with:
+#   npx wrangler kv namespace create USAGE
+# then paste the id it prints below.
+[[kv_namespaces]]
+binding = "USAGE"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
+
+# Secrets (never put these in this file). Set them with:
+#   npx wrangler secret put ANTHROPIC_API_KEY
+#   npx wrangler secret put REVENUECAT_SECRET_KEY
+#   npx wrangler secret put DEV_TOKEN        (optional, for testing without a subscription)

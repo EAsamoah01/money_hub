@@ -38,6 +38,7 @@ abstract final class Routes {
   static const settings = '/settings';
   static const settingsBackup = '/settings/backup';
   static const settingsSecurity = '/settings/security';
+  static const coach = '/coach'; // AI chat. ?ask=&lesson=&topic=
 
   // ── Tab 0: Home ──
   static const home = '/home';
@@ -81,6 +82,7 @@ abstract final class Routes {
     holdings,
     debtPlan,
     savedCalculations,
+    coach,
   };
 }
 
@@ -107,6 +109,17 @@ abstract final class Loc {
   static String holdings(int accountId) => '/goals/net-worth/holdings/$accountId';
   static String lesson(String id) => '/learn/$id';
   static String lessonQuiz(String id) => '/learn/$id/quiz';
+  /// AI coach chat. [ask] is sent as the first question; [lessonId] or
+  /// [topic] switch it to explaining that lesson or calculator result.
+  static String coach({String? ask, String? lessonId, String? topic}) {
+    final q = {
+      if (ask != null) 'ask': ask,
+      if (lessonId != null) 'lesson': lessonId,
+      if (topic != null) 'topic': topic,
+    };
+    return Uri(path: Routes.coach, queryParameters: q.isEmpty ? null : q).toString();
+  }
+
   static String paywall({String? from}) =>
       Uri(path: Routes.paywall, queryParameters: from == null ? null : {'from': from}).toString();
 

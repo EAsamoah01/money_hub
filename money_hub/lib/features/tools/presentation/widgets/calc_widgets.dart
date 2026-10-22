@@ -426,6 +426,18 @@ class CalcFooter extends ConsumerWidget {
               icon: const Icon(Icons.ios_share, size: 18),
               label: const Text('Share result'),
             ),
+            if (canPin)
+              OutlinedButton.icon(
+                onPressed: () => context.push(Loc.coach(
+                  topic: '${calculator!.title} calculator\n'
+                      'Inputs: ${inputs!.entries.map((e) => '${e.key}=${e.value}').join(', ')}\n'
+                      'Result: $pinSummary\n'
+                      'Full result text: $shareText',
+                  ask: 'What does this result mean for me, and what could I change to improve it?',
+                )),
+                icon: const Icon(Icons.auto_awesome, size: 18),
+                label: const Text('Explain (AI)'),
+              ),
             if (lessonLocation != null)
               OutlinedButton.icon(
                 onPressed: () => context.push(lessonLocation!),

@@ -5,7 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/database/app_database.dart';
+import '../../../core/services/ai_service.dart';
 import '../../../core/utils/money_format.dart';
+import '../../ai/domain/money_context.dart';
+import '../../ai/presentation/ai_gate.dart';
 import '../data/budget_repository.dart';
 
 /// Add or edit spending / income.
@@ -35,6 +38,7 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   MoneyTransaction? _existing;
   bool _ready = false;
   bool _saving = false;
+  bool _suggesting = false;
 
   bool get _isEdit => widget.txId != null;
 
@@ -110,6 +114,51 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       if (!mounted) return;
       setState(() => _saving = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not save: $e')));
+    }
+  }
+
+  /// Asks the AI which envelope this purchase belongs in.
+  Future<void> _suggestCategory() async {
+    final payee = _payee.text.trim();
+    final note = _note.text.trim();
+    if (payee.isEmpty && note.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Type where you paid first, e.g. "Walmart"')));
+      return;
+    }
+    if (!await ensureAiAllowed(context, ref)) return;
+    final cats = ref.read(categoriesProvider).valueOrNull ?? const [];
+    if (cats.isEmpty) return;
+    setState(() => _suggesting = true);
+    try {
+      final names = [for (final c in cats) c.name];
+      final answer = await ref.read(aiServiceProvider).ask(
+        mode: AiMode.categorize,
+        context: categoriesContext(names),
+        messages: [
+          AiMessage(
+            fromUser: true,
+            text: [
+              'Paid to: ${payee.isEmpty ? '(not given)' : payee}',
+              if (note.isNotEmpty) 'Note: $note',
+              if (_amount.text.trim().isNotEmpty) 'Amount: \$${_amount.text.trim()}',
+            ].join('\n'),
+          ),
+        ],
+      );
+      if (!mounted) return;
+      final match = matchCategory(answer, names);
+      if (match == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('No clear match. Pick a category below.')));
+        return;
+      }
+      setState(() => _categoryId = cats.firstWhere((c) => c.name == match).id);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Category: $match')));
+    } catch (e) {
+      if (mounted) showAiError(context, e);
+    } finally {
+      if (mounted) setState(() => _suggesting = false);
     }
   }
 
@@ -205,12 +254,26 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
                         decoration: InputDecoration(
                           labelText: isIncome ? 'From (e.g. employer)' : 'Paid to (e.g. store)',
                           prefixIcon: const Icon(Icons.storefront_outlined),
+                          suffixIcon: isIncome
+                              ? null
+                              : _suggesting
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(14),
+                                      child: SizedBox(
+                                          width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                                    )
+                                  : IconButton(
+                                      tooltip: 'Suggest a category (AI)',
+                                      icon: const Icon(Icons.auto_awesome),
+                                      onPressed: _suggestCategory,
+                                    ),
                         ),
                       ),
                       const SizedBox(height: 14),
                       if (!isIncome) ...[
                         DropdownMenu<int>(
-                          key: ValueKey('cat-${cats.length}'),
+                          // Rebuilt when the AI picks a category so the new choice shows.
+                          key: ValueKey('cat-${cats.length}-$_categoryId'),
                           initialSelection: _categoryId,
                           expandedInsets: EdgeInsets.zero,
                           label: const Text('Category'),

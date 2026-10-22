@@ -56,7 +56,19 @@ class _LessonBody extends StatelessWidget {
     final completed = status?.completed ?? false;
 
     return Scaffold(
-      appBar: AppBar(title: Text(lesson.trackTitle)),
+      appBar: AppBar(
+        title: Text(lesson.trackTitle),
+        actions: [
+          IconButton(
+            tooltip: 'Explain this lesson (AI)',
+            icon: const Icon(Icons.auto_awesome),
+            onPressed: () => context.push(Loc.coach(
+              lessonId: lesson.id,
+              ask: 'Explain this lesson more simply, with an everyday example.',
+            )),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
