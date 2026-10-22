@@ -5,7 +5,9 @@
 //     "RC_GOOGLE_KEY": "goog_xxxxxxxx",
 //     "RC_APPLE_KEY": "appl_xxxxxxxx",
 //     "RC_WEB_KEY": "rcb_xxxxxxxx",
-//     "OFFERS_URL": "https://gist.githubusercontent.com/.../affiliate_offers.json"
+//     "OFFERS_URL": "https://gist.githubusercontent.com/.../affiliate_offers.json",
+//     "AI_PROXY_URL": "https://money-core-ai.<you>.workers.dev",
+//     "AI_DEV_TOKEN": "same value as the worker's DEV_TOKEN (debug builds only)"
 //   }
 //
 // and run:  flutter run --dart-define-from-file=env.json
@@ -36,6 +38,13 @@ abstract final class AppConfig {
     'TERMS_URL',
     defaultValue: 'https://yourdomain.com/terms',
   );
+
+  /// The AI proxy (Cloudflare Worker in ai_worker/). Empty = AI turned off.
+  static const aiProxyUrl = String.fromEnvironment('AI_PROXY_URL');
+
+  /// Lets debug builds use AI without a real subscription. Never sent from
+  /// release builds.
+  static const aiDevToken = String.fromEnvironment('AI_DEV_TOKEN');
 
   /// Free users can pin this many calculator results to Home.
   static const freePinLimit = 3;

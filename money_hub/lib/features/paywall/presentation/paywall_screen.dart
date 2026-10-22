@@ -14,6 +14,7 @@ import '../../../core/widgets/gradient_header.dart';
 const _proSeed = Color(0xFF6D28D9); // violet, only used on the paywall
 
 const _features = <(IconData, String, String)>[
+  (Icons.auto_awesome, 'AI money coach', 'Ask about your budget, get monthly insights and auto-sorted spending'),
   (Icons.route_outlined, 'Debt payoff plans', 'Snowball vs avalanche with extra payments, saved to your dashboard'),
   (Icons.push_pin_outlined, 'Unlimited pinned results', 'Free accounts can pin ${AppConfig.freePinLimit}'),
   (Icons.beach_access_outlined, 'Retirement scenarios', 'Compare retirement ages and savings rates (coming soon)'),

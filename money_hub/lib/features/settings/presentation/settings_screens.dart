@@ -14,6 +14,7 @@ import '../../../core/services/purchases_service.dart';
 import '../../../core/state/app_state.dart';
 import '../../../core/widgets/gradient_header.dart';
 import '../../../core/widgets/placeholder_screen.dart';
+import '../../ai/presentation/ai_gate.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -117,6 +118,33 @@ class SettingsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    const SectionTitle('AI money coach'),
+                    Card(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.auto_awesome),
+                            title: const Text('Open the money coach'),
+                            subtitle: Text(isPro ? 'Ask anything about your budget' : 'Pro feature'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => context.push(Loc.coach()),
+                          ),
+                          SwitchListTile(
+                            secondary: const Icon(Icons.share_outlined),
+                            title: const Text('Share budget summary with AI'),
+                            subtitle: const Text('Needed for AI answers. Turn off to stop sending any data.'),
+                            value: ref.watch(aiConsentProvider).valueOrNull ?? false,
+                            onChanged: (v) async {
+                              if (v) {
+                                await ensureAiAllowed(context, ref);
+                              } else {
+                                await setAiConsent(ref, false);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                     const SectionTitle('Your data'),
                     Card(
                       child: Column(
@@ -152,7 +180,8 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       '${AppConfig.appName} is for education only and is not financial, tax or legal advice. '
-                      'Your budget and debt data stays on this device.\n\n$disclosure',
+                      'Your budget and debt data stays on this device. If you use the AI coach, a summary is sent '
+                      'to answer your question and is not stored by us.\n\n$disclosure',
                       style: t.textTheme.bodySmall,
                     ),
                   ],

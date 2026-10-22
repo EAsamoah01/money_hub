@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/ai/presentation/coach_screen.dart';
 import '../../features/budget/presentation/budget_screens.dart';
 import '../../features/goals/presentation/goals_screens.dart';
 import '../../features/home/presentation/home_screen.dart';
@@ -77,6 +78,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (_, s) => MaterialPage(
           fullscreenDialog: true,
           child: PaywallScreen(returnTo: s.uri.queryParameters['from']),
+        ),
+      ),
+      GoRoute(
+        path: Routes.coach,
+        parentNavigatorKey: _rootKey,
+        builder: (_, s) => _themed(
+          AppModule.home,
+          CoachScreen(
+            ask: s.uri.queryParameters['ask'],
+            lessonId: s.uri.queryParameters['lesson'],
+            topic: s.uri.queryParameters['topic'],
+          ),
         ),
       ),
       GoRoute(

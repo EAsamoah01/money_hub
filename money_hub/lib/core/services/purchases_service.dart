@@ -63,6 +63,9 @@ abstract class PurchasesService {
 
   /// Store page where the user manages/cancels the subscription.
   Future<String?> manageUrl();
+
+  /// Id the AI server uses to check this user's subscription.
+  Future<String> userId();
 }
 
 // ───────────────────────── RevenueCat ─────────────────────────
@@ -142,6 +145,9 @@ class RevenueCatPurchasesService implements PurchasesService {
 
   @override
   Future<String?> manageUrl() async => (await Purchases.getCustomerInfo()).managementURL;
+
+  @override
+  Future<String> userId() => Purchases.appUserID;
 }
 
 // ───────────────────────── Demo (no store) ─────────────────────────
@@ -190,6 +196,9 @@ class DemoPurchasesService implements PurchasesService {
 
   @override
   Future<String?> manageUrl() async => null;
+
+  @override
+  Future<String> userId() async => 'demo';
 
   /// Debug helper used from Settings.
   Future<void> resetDemo() => _set(false);

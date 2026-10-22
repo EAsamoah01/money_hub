@@ -8,6 +8,7 @@ import '../../../core/router/routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/money_format.dart';
 import '../../../core/widgets/gradient_header.dart';
+import '../../ai/presentation/insights_card.dart';
 import '../../budget/data/bills_repository.dart';
 import '../../budget/data/budget_repository.dart';
 import '../../budget/domain/budget_math.dart';
@@ -52,6 +53,11 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         actions: [
+          IconButton(
+            tooltip: 'Money coach (AI)',
+            icon: const Icon(Icons.auto_awesome),
+            onPressed: () => context.push(Loc.coach()),
+          ),
           IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings_outlined),
@@ -99,6 +105,10 @@ class HomeScreen extends ConsumerWidget {
                       action: TextButton(onPressed: () => context.go(Routes.budget), child: const Text('Budget')),
                     ),
                     const ModuleTheme(module: AppModule.budget, child: _BudgetCard()),
+
+                    // ── AI coach ──
+                    const SectionTitle('Money coach'),
+                    const InsightsCard(),
 
                     // ── Learn ──
                     SectionTitle(
