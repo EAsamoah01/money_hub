@@ -130,7 +130,7 @@ class RevenueCatPurchasesService implements PurchasesService {
     final pkg = plan.raw;
     if (pkg is! Package) return (PurchaseOutcome.unavailable, 'Plan not available');
     try {
-      await Purchases.purchasePackage(pkg);
+      await Purchases.purchase(PurchaseParams.package(pkg));
       final pro = await isPro();
       return pro ? (PurchaseOutcome.success, null) : (PurchaseOutcome.failed, 'Purchase did not unlock Pro');
     } on PlatformException catch (e) {

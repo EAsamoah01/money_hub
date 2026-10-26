@@ -124,7 +124,7 @@ class BillTile extends StatelessWidget {
       status = 'Paused';
       statusColor = cs.onSurfaceVariant;
     } else if (trialSoon) {
-      status = 'Free trial ends ${DateFormat.MMMd().format(trial!)}';
+      status = 'Free trial ends ${DateFormat.MMMd().format(trial)}';
       statusColor = Colors.orange.shade800;
     } else {
       status = dueLabel(bill.nextDueDate, today);
