@@ -65,13 +65,13 @@ release builds always need a real subscription.
 - To change the model, edit `MODEL` in `wrangler.toml` and redeploy.
 - Cloudflare's free plan covers 100,000 requests a day.
 
-## Before launch
+## Reports and policies
 
-- Add an "AI features" paragraph to your privacy policy: what is sent
-  (question, budget summary), to whom (Anthropic, via your Cloudflare Worker),
-  that you don't store it, and how to turn it off.
-- Google Play's Data safety form: declare "Financial info" shared with a
-  service provider for app functionality, only when the user uses AI.
+- Every AI answer has a **Report this answer** button, as Google Play's
+  AI-generated content policy requires. Reports are kept 90 days in KV. To list them:
+  `npx wrangler kv key list --binding USAGE --prefix report:`
+- The privacy policy served at `/privacy` already covers the AI features.
+  Data safety answers are in `store/PLAY_LISTING.md`.
 
 ## Worker tests
 

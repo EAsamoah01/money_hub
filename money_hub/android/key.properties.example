@@ -1,0 +1,6 @@
+# Copy to android/key.properties (git-ignored) and fill in. See LAUNCH.md.
+# storeFile is relative to android/app/ — or use a full path with forward slashes.
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=upload
+storeFile=C:/money_hub_keys/money-core-upload.jks

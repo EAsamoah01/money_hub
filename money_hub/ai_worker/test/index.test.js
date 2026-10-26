@@ -41,3 +41,32 @@ test('hasActiveEntitlement', () => {
   assert.equal(hasActiveEntitlement(sub(null), 'pro', now), true);
   assert.equal(hasActiveEntitlement({ subscriber: { entitlements: {} } }, 'pro', now), false);
 });
+
+import { privacyPage, termsPage } from '../src/pages.js';
+
+test('legal pages fill in the developer details and escape them', () => {
+  const env = { DEVELOPER_NAME: 'Acme <Co>', CONTACT_EMAIL: 'help@acme.test' };
+  const p = privacyPage(env);
+  assert.match(p, /Acme &lt;Co&gt;/);
+  assert.match(p, /mailto:help@acme\.test/);
+  assert.match(p, /does not save your\s+questions/);
+  assert.match(termsPage(env), /not financial, investment, tax or legal advice/);
+});
+
+import { handleReport } from '../src/index.js';
+
+test('report endpoint stores the flagged answer', async () => {
+  const saved = [];
+  const env = { USAGE: { put: async (k, v, o) => saved.push({ k, v: JSON.parse(v), o }) } };
+  const req = new Request('https://w/report', {
+    method: 'POST',
+    headers: { 'X-User-Id': 'u1' },
+    body: JSON.stringify({ reason: 'Wrong or misleading', answer: 'Buy stocks!', question: 'hi', mode: 'coach' }),
+  });
+  const res = await handleReport(req, env);
+  assert.equal(res.status, 200);
+  assert.equal(saved.length, 1);
+  assert.match(saved[0].k, /^report:/);
+  assert.equal(saved[0].v.answer, 'Buy stocks!');
+  assert.equal(saved[0].o.expirationTtl, 60 * 60 * 24 * 90);
+});

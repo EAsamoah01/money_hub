@@ -29,15 +29,20 @@ abstract final class AppConfig {
   /// use only assets/config/affiliate_offers.json.
   static const offersUrl = String.fromEnvironment('OFFERS_URL');
 
-  /// Required on the paywall by Apple and Google. Replace with your pages.
-  static const privacyPolicyUrl = String.fromEnvironment(
-    'PRIVACY_URL',
-    defaultValue: 'https://yourdomain.com/privacy',
-  );
-  static const termsUrl = String.fromEnvironment(
-    'TERMS_URL',
-    defaultValue: 'https://yourdomain.com/terms',
-  );
+  /// Required on the paywall by Apple and Google. By default these are the
+  /// pages served by the AI worker (ai_worker/src/pages.js); set PRIVACY_URL /
+  /// TERMS_URL in env.json to use pages hosted elsewhere.
+  static String get privacyPolicyUrl => _page(const String.fromEnvironment('PRIVACY_URL'), 'privacy');
+  static String get termsUrl => _page(const String.fromEnvironment('TERMS_URL'), 'terms');
+
+  static String _page(String override, String path) {
+    if (override.isNotEmpty) return override;
+    var base = aiProxyUrl.trim();
+    while (base.endsWith('/')) {
+      base = base.substring(0, base.length - 1);
+    }
+    return base.isEmpty ? 'https://yourdomain.com/$path' : '$base/$path';
+  }
 
   /// The AI proxy (Cloudflare Worker in ai_worker/). Empty = AI turned off.
   static const aiProxyUrl = String.fromEnvironment('AI_PROXY_URL');

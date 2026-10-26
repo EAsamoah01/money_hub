@@ -69,12 +69,18 @@ class _InsightsCardState extends ConsumerState<InsightsCard> {
                     visualDensity: VisualDensity.compact,
                     backgroundColor: cs.primaryContainer,
                   )
-                else if (saved != null)
+                else if (saved != null) ...[
+                  IconButton(
+                    tooltip: 'Report this answer',
+                    onPressed: () => reportAiAnswer(context, ref, answer: saved, mode: AiMode.insights),
+                    icon: const Icon(Icons.flag_outlined),
+                  ),
                   IconButton(
                     tooltip: 'Refresh',
                     onPressed: _busy ? null : _generate,
                     icon: const Icon(Icons.refresh),
                   ),
+                ],
               ],
             ),
             const SizedBox(height: 10),

@@ -65,3 +65,30 @@ void showAiError(BuildContext context, Object error) {
         : null,
   ));
 }
+
+/// "Report this answer": lets the user flag harmful or wrong AI content
+/// without leaving the app (a Google Play requirement for AI features).
+Future<void> reportAiAnswer(
+  BuildContext context,
+  WidgetRef ref, {
+  required String answer,
+  String? question,
+  AiMode mode = AiMode.coach,
+}) async {
+  final reason = await showDialog<String>(
+    context: context,
+    builder: (ctx) => SimpleDialog(
+      title: const Text('Report this answer'),
+      children: [
+        for (final r in const ['Harmful or offensive', 'Wrong or misleading', 'Something else'])
+          SimpleDialogOption(onPressed: () => Navigator.pop(ctx, r), child: Text(r)),
+      ],
+    ),
+  );
+  if (reason == null || !context.mounted) return;
+  final messenger = ScaffoldMessenger.of(context);
+  final ok = await ref.read(aiServiceProvider).report(answer: answer, reason: reason, question: question, mode: mode);
+  messenger.showSnackBar(SnackBar(
+    content: Text(ok ? "Thanks. We'll review this answer." : "Couldn't send the report. Check your connection."),
+  ));
+}

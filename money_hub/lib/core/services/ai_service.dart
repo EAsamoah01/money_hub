@@ -106,4 +106,29 @@ class AiService {
   }
 }
 
+extension AiReporting on AiService {
+  /// Sends an AI answer the user flagged to the server for review.
+  /// Returns false if it couldn't be sent.
+  Future<bool> report({
+    required String answer,
+    required String reason,
+    String? question,
+    AiMode mode = AiMode.coach,
+  }) async {
+    if (!AiService.isConfigured) return false;
+    try {
+      final res = await _client
+          .post(
+            _endpoint.replace(path: _endpoint.path.replaceFirst(RegExp(r'/ai$'), '/report')),
+            headers: {'Content-Type': 'application/json', 'X-User-Id': await _purchases.userId()},
+            body: jsonEncode({'reason': reason, 'mode': mode.name, 'question': question ?? '', 'answer': answer}),
+          )
+          .timeout(const Duration(seconds: 20));
+      return res.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
 final aiServiceProvider = Provider<AiService>((ref) => AiService(ref.watch(purchasesServiceProvider)));
