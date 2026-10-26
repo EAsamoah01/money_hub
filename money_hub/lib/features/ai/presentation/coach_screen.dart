@@ -160,7 +160,19 @@ class _CoachScreenState extends ConsumerState<CoachScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                     children: [
                       if (_messages.isEmpty && !_explaining) _Welcome(enabled: _allowed && !_busy, onPick: _send),
-                      for (final m in _messages) _Bubble(message: m),
+                      for (final (i, m) in _messages.indexed)
+                        _Bubble(
+                          message: m,
+                          onReport: m.fromUser
+                              ? null
+                              : () => reportAiAnswer(
+                                    context,
+                                    ref,
+                                    answer: m.text,
+                                    question: i > 0 ? _messages[i - 1].text : null,
+                                    mode: _explaining ? AiMode.explain : AiMode.coach,
+                                  ),
+                        ),
                       if (_busy) const _Typing(),
                       if (_error != null)
                         Card(
@@ -264,8 +276,16 @@ class _Welcome extends StatelessWidget {
 }
 
 class _Bubble extends StatelessWidget {
-  const _Bubble({required this.message});
+  const _Bubble({required this.message, this.onReport});
   final AiMessage message;
+
+  /// Set for AI answers: shows Copy and Report under the bubble.
+  final VoidCallback? onReport;
+
+  void _copy(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: message.text));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied')));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -275,28 +295,52 @@ class _Bubble extends StatelessWidget {
       alignment: mine ? Alignment.centerRight : Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.85),
-        child: GestureDetector(
-          onLongPress: () {
-            Clipboard.setData(ClipboardData(text: message.text));
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied')));
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              color: mine ? cs.primary : cs.surfaceContainerHigh,
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(18),
-                topRight: const Radius.circular(18),
-                bottomLeft: Radius.circular(mine ? 18 : 4),
-                bottomRight: Radius.circular(mine ? 4 : 18),
+        child: Column(
+          crossAxisAlignment: mine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onLongPress: () => _copy(context),
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                decoration: BoxDecoration(
+                  color: mine ? cs.primary : cs.surfaceContainerHigh,
+                  borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(18),
+                    topRight: const Radius.circular(18),
+                    bottomLeft: Radius.circular(mine ? 18 : 4),
+                    bottomRight: Radius.circular(mine ? 4 : 18),
+                  ),
+                ),
+                child: Text(
+                  message.text,
+                  style: TextStyle(color: mine ? cs.onPrimary : cs.onSurface, height: 1.35),
+                ),
               ),
             ),
-            child: Text(
-              message.text,
-              style: TextStyle(color: mine ? cs.onPrimary : cs.onSurface, height: 1.35),
-            ),
-          ),
+            if (onReport != null)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    tooltip: 'Copy',
+                    visualDensity: VisualDensity.compact,
+                    iconSize: 18,
+                    color: cs.onSurfaceVariant,
+                    icon: const Icon(Icons.copy_outlined),
+                    onPressed: () => _copy(context),
+                  ),
+                  IconButton(
+                    tooltip: 'Report this answer',
+                    visualDensity: VisualDensity.compact,
+                    iconSize: 18,
+                    color: cs.onSurfaceVariant,
+                    icon: const Icon(Icons.flag_outlined),
+                    onPressed: onReport,
+                  ),
+                ],
+              ),
+          ],
         ),
       ),
     );

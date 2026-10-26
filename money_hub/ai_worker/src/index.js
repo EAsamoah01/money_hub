@@ -10,6 +10,10 @@
 //   2. enforces a per-user daily limit (KV),
 //   3. adds the system prompt for the mode and calls Claude.
 // The Anthropic key lives only here, as a Worker secret.
+//
+// It also serves the public /privacy and /terms pages (src/pages.js).
+
+import { htmlResponse, privacyPage, termsPage } from './pages.js';
 
 export const MODES = {
   coach: {
@@ -140,11 +144,48 @@ async function underDailyLimit(userId, env) {
   return true;
 }
 
+/**
+ * In-app "Report this answer" (required by Google Play for AI features).
+ * Kept for 90 days in KV under report:<time>:<random> so you can review them:
+ *   npx wrangler kv key list --binding USAGE --prefix report:
+ */
+export async function handleReport(request, env) {
+  const userId = (request.headers.get('X-User-Id') || '').trim().slice(0, 200);
+  if (!userId) return fail(401, 'unauthorized', 'Missing user');
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return fail(400, 'bad_request', 'Invalid JSON');
+  }
+  const report = {
+    at: new Date().toISOString(),
+    userId,
+    reason: String(body.reason ?? '').slice(0, 100),
+    mode: String(body.mode ?? '').slice(0, 20),
+    question: String(body.question ?? '').slice(0, 1000),
+    answer: String(body.answer ?? '').slice(0, 4000),
+  };
+  if (!report.answer) return fail(400, 'bad_request', 'Nothing to report');
+  console.log('AI answer reported', report.reason, report.mode);
+  if (env.USAGE) {
+    const key = `report:${report.at}:${Math.random().toString(36).slice(2, 8)}`;
+    await env.USAGE.put(key, JSON.stringify(report), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+  return json({ ok: true });
+}
+
 export default {
   async fetch(request, env, ctx) {
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
     const url = new URL(request.url);
     if (url.pathname === '/health') return json({ ok: true });
+    if (request.method === 'GET') {
+      if (url.pathname === '/privacy') return htmlResponse(privacyPage(env));
+      if (url.pathname === '/terms') return htmlResponse(termsPage(env));
+      if (url.pathname === '/') return Response.redirect(new URL('/privacy', url).toString(), 302);
+    }
+    if (url.pathname === '/report' && request.method === 'POST') return handleReport(request, env);
     if (url.pathname !== '/ai' || request.method !== 'POST') return fail(404, 'not_found', 'Not found');
     if (!env.ANTHROPIC_API_KEY) return fail(500, 'server', 'AI is not configured on the server.');
 

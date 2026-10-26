@@ -10,6 +10,12 @@ PRO_ENTITLEMENT = "pro"
 # Most AI requests one Pro user can make per day (protects your bill).
 DAILY_LIMIT = "100"
 
+# Shown on the /privacy and /terms pages. Fill these in before launch.
+DEVELOPER_NAME = "Peprah Tech"
+CONTACT_EMAIL = "support@example.com"
+EFFECTIVE_DATE = "October 26, 2026"
+GOVERNING_LAW = "the State of California, USA"
+
 # Daily usage counter. Create it once with:
 #   npx wrangler kv namespace create USAGE
 # then paste the id it prints below.
