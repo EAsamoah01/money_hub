@@ -70,3 +70,14 @@ test('report endpoint stores the flagged answer', async () => {
   assert.equal(saved[0].v.answer, 'Buy stocks!');
   assert.equal(saved[0].o.expirationTtl, 60 * 60 * 24 * 90);
 });
+
+import worker from '../src/index.js';
+
+test('homepage and shared links show the Get Money Core page', async () => {
+  const home = await worker.fetch(new Request('https://w/'), {}, {});
+  assert.equal(home.status, 200);
+  assert.match(await home.text(), /Your money, in one place/);
+  const shared = await worker.fetch(new Request('https://w/tools/fire?spend=40000'), {}, {});
+  assert.match(await shared.text(), /shared a Money Core result/);
+  assert.match(await (await worker.fetch(new Request('https://w/privacy'), {}, {})).text(), /Privacy policy/);
+});
