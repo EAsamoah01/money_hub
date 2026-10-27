@@ -13,7 +13,7 @@
 //
 // It also serves the public /privacy and /terms pages (src/pages.js).
 
-import { htmlResponse, privacyPage, termsPage } from './pages.js';
+import { homePage, htmlResponse, privacyPage, termsPage } from './pages.js';
 
 export const MODES = {
   coach: {
@@ -183,7 +183,11 @@ export default {
     if (request.method === 'GET') {
       if (url.pathname === '/privacy') return htmlResponse(privacyPage(env));
       if (url.pathname === '/terms') return htmlResponse(termsPage(env));
-      if (url.pathname === '/') return Response.redirect(new URL('/privacy', url).toString(), 302);
+      if (url.pathname === '/') return htmlResponse(homePage(env));
+      // Links shared from the app, e.g. /tools/fire?spend=40000
+      if (url.pathname.startsWith('/tools') || url.pathname.startsWith('/learn')) {
+        return htmlResponse(homePage(env, { shared: true }));
+      }
     }
     if (url.pathname === '/report' && request.method === 'POST') return handleReport(request, env);
     if (url.pathname !== '/ai' || request.method !== 'POST') return fail(404, 'not_found', 'Not found');

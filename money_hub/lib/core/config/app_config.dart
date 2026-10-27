@@ -6,7 +6,7 @@
 //     "RC_APPLE_KEY": "appl_xxxxxxxx",
 //     "RC_WEB_KEY": "rcb_xxxxxxxx",
 //     "OFFERS_URL": "https://gist.githubusercontent.com/.../affiliate_offers.json",
-//     "AI_PROXY_URL": "https://money-core-ai.<you>.workers.dev",
+//     "AI_PROXY_URL": "https://moneycore.peprahsoft.com",
 //     "AI_DEV_TOKEN": "same value as the worker's DEV_TOKEN (debug builds only)"
 //   }
 //
@@ -41,7 +41,7 @@ abstract final class AppConfig {
     while (base.endsWith('/')) {
       base = base.substring(0, base.length - 1);
     }
-    return base.isEmpty ? 'https://yourdomain.com/$path' : '$base/$path';
+    return base.isEmpty ? 'https://moneycore.peprahsoft.com/$path' : '$base/$path';
   }
 
   /// The AI proxy (Cloudflare Worker in ai_worker/). Empty = AI turned off.

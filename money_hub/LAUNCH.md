@@ -27,7 +27,7 @@ The AI worker also serves `/privacy` and `/terms` (`ai_worker/src/pages.js`).
    - `GOVERNING_LAW`: the state or country whose law applies (California is the default; change it if
      you or your business are elsewhere)
 2. Deploy: `cd ai_worker` then `npx wrangler deploy`
-3. Open `https://money-core-ai.<you>.workers.dev/privacy` and `/terms` to check them.
+3. Open `https://moneycore.peprahsoft.com/privacy` and `/terms` to check them (see AI.md, "Custom domain").
 
 The app's Privacy and Terms links use these pages automatically once `AI_PROXY_URL` is in `env.json`.
 
