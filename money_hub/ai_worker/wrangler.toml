@@ -12,7 +12,7 @@ DAILY_LIMIT = "100"
 
 # Shown on the /privacy and /terms pages. Fill these in before launch.
 DEVELOPER_NAME = "Peprah Tech"
-CONTACT_EMAIL = "support@example.com"
+CONTACT_EMAIL = "starlinkks@gmail.com"
 EFFECTIVE_DATE = "October 26, 2026"
 GOVERNING_LAW = "the State of California, USA"
 
@@ -21,7 +21,7 @@ GOVERNING_LAW = "the State of California, USA"
 # then paste the id it prints below.
 [[kv_namespaces]]
 binding = "USAGE"
-id = "PASTE_KV_NAMESPACE_ID_HERE"
+id = "1517fe8b3de74c52a6955fc0d17e9f0a"
 
 # Secrets (never put these in this file). Set them with:
 #   npx wrangler secret put ANTHROPIC_API_KEY
