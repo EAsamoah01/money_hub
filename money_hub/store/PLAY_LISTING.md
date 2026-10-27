@@ -79,8 +79,8 @@ Feature graphic text: **"Your money, in one place"** with the pills *Budget · B
 - **Category:** Finance
 - **Tags:** Budgeting, Personal finance, Bill reminders, Money management (pick the closest Play offers)
 - **Contact email:** your support email (the same one as `CONTACT_EMAIL` in `ai_worker/wrangler.toml`)
-- **Website:** your worker URL, or your own site later
-- **Privacy policy URL:** `https://money-core-ai.<you>.workers.dev/privacy`
+- **Website:** `https://moneycore.peprahsoft.com`
+- **Privacy policy URL:** `https://moneycore.peprahsoft.com/privacy`
 
 ---
 

@@ -44,10 +44,17 @@ npx wrangler deploy
 `deploy` prints your URL, e.g. `https://money-core-ai.yourname.workers.dev`.
 Check it: open `https://money-core-ai.yourname.workers.dev/health` → `{"ok":true}`.
 
+### Custom domain
+
+The app's share links and the privacy policy use **`https://moneycore.peprahsoft.com`**. Attach it once:
+Cloudflare → **Workers & Pages → money-core-ai → Settings → Domains & Routes → Add →
+Custom domain** → `moneycore.peprahsoft.com` (peprahsoft.com must be in the same Cloudflare
+account). Check `https://moneycore.peprahsoft.com/health`.
+
 Then add to `money_hub\env.json` (git-ignored):
 
 ```json
-"AI_PROXY_URL": "https://money-core-ai.yourname.workers.dev",
+"AI_PROXY_URL": "https://moneycore.peprahsoft.com",
 "AI_DEV_TOKEN": "the same DEV_TOKEN text"
 ```
 

@@ -2,11 +2,12 @@
 //
 // Deep links map 1:1 to these paths:
 //   moneyhub://app/tools/fire              (custom scheme)
-//   https://yourdomain.com/tools/fire      (universal/app link)
+//   https://moneycore.peprahsoft.com/tools/fire   (universal/app link)
 // Use the location builders below instead of hand-writing strings.
 
-/// Public web address used in share links. Change to your real domain.
-const kWebBaseUrl = 'https://yourdomain.com';
+/// Public web address used in share links. Served by the AI worker
+/// (ai_worker/), which shows a "Get Money Core" page for shared links.
+const kWebBaseUrl = 'https://moneycore.peprahsoft.com';
 
 /// Calculator ids used in /tools/:calculatorId — also the URL slug.
 enum CalculatorId {

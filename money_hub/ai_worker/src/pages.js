@@ -1,7 +1,8 @@
 // Public legal pages for Google Play, RevenueCat and the in-app links.
 // Served by the same Worker as the AI proxy:
-//   https://<your-worker>.workers.dev/privacy
-//   https://<your-worker>.workers.dev/terms
+//   https://moneycore.peprahsoft.com/            (homepage; also shown for shared calculator links)
+//   https://moneycore.peprahsoft.com/privacy
+//   https://moneycore.peprahsoft.com/terms
 //
 // Fill in DEVELOPER_NAME, CONTACT_EMAIL, EFFECTIVE_DATE and GOVERNING_LAW in
 // wrangler.toml ([vars]). Have someone qualified review these before launch.
@@ -236,8 +237,33 @@ otherwise.</p>
 `, v);
 }
 
-export function htmlResponse(html) {
+export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.peprahtech.moneycore';
+
+/** Homepage. Also shown when someone opens a shared calculator or lesson link. */
+export function homePage(env, { shared = false } = {}) {
+  const v = pageVars(env);
+  return layout(shared ? 'Shared from Money Core' : 'Budget, bills and debt in one app', `
+<h1>${shared ? 'Someone shared a Money Core result with you' : 'Your money, in one place'}</h1>
+<p class="meta">${shared
+    ? 'Open it in the Money Core app to see the numbers and try your own.'
+    : 'Envelope budgeting, bill reminders, debt payoff plans, money calculators and an AI money coach.'}</p>
+<div class="card">
+<ul>
+<li><strong>Budget:</strong> give every dollar a job with envelopes.</li>
+<li><strong>Bills &amp; Alerts:</strong> reminders before every due date and free-trial charge.</li>
+<li><strong>Debt payoff:</strong> snowball vs avalanche and your debt-free date.</li>
+<li><strong>Calculators:</strong> compound interest, FIRE, inflation and more.</li>
+<li><strong>AI money coach (Pro):</strong> ask questions about your own budget.</li>
+</ul>
+<p><a href="${PLAY_URL}" style="display:inline-block;background:var(--accent);color:var(--bg);padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700">Get Money Core on Google Play</a></p>
+</div>
+<p>No account and no ads. Your budget stays on your phone.</p>
+`, v);
+}
+
+export function htmlResponse(html, status = 200) {
   return new Response(html, {
+    status,
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'public, max-age=3600',

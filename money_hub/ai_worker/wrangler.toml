@@ -4,6 +4,9 @@ name = "money-core-ai"
 main = "src/index.js"
 compatibility_date = "2026-10-01"
 
+# Custom domain: attached in the Cloudflare dashboard (see ../AI.md):
+#   https://moneycore.peprahsoft.com
+
 [vars]
 MODEL = "claude-haiku-5-5"
 PRO_ENTITLEMENT = "pro"
