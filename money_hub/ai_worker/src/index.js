@@ -103,6 +103,11 @@ export function hasActiveEntitlement(subscriberJson, entitlement, now = Date.now
   return Date.parse(e.expires_date) > now;
 }
 
+/** Secrets pasted on Windows can carry a stray BOM, quotes or line break. */
+export function secret(v) {
+  return String(v ?? '').replace(/^\uFEFF/, '').trim().replace(/^["']|["']$/g, '').trim();
+}
+
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -125,7 +130,7 @@ async function isPro(userId, env, ctx) {
   if (hit) return (await hit.text()) === '1';
 
   const res = await fetch(`https://api.revenuecat.com/v1/subscribers/${encodeURIComponent(userId)}`, {
-    headers: { Authorization: `Bearer ${env.REVENUECAT_SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${secret(env.REVENUECAT_SECRET_KEY)}` },
   });
   if (!res.ok) throw new Error(`RevenueCat ${res.status}`);
   const pro = hasActiveEntitlement(await res.json(), env.PRO_ENTITLEMENT || 'pro');
@@ -206,7 +211,7 @@ export default {
     // ── Who is asking, and are they Pro? ──
     const userId = (request.headers.get('X-User-Id') || '').trim().slice(0, 200);
     const devToken = request.headers.get('X-Dev-Token') || '';
-    const isDev = Boolean(env.DEV_TOKEN) && devToken === env.DEV_TOKEN;
+    const isDev = Boolean(secret(env.DEV_TOKEN)) && devToken.trim() === secret(env.DEV_TOKEN);
     if (!userId) return fail(401, 'unauthorized', 'Missing user');
     if (!isDev) {
       if (userId.startsWith('demo')) return fail(402, 'not_pro', 'AI needs Money Core Pro.');
@@ -224,7 +229,7 @@ export default {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'x-api-key': env.ANTHROPIC_API_KEY,
+        'x-api-key': secret(env.ANTHROPIC_API_KEY),
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
       },

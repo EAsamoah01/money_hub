@@ -81,3 +81,11 @@ test('homepage and shared links show the Get Money Core page', async () => {
   assert.match(await shared.text(), /shared a Money Core result/);
   assert.match(await (await worker.fetch(new Request('https://w/privacy'), {}, {})).text(), /Privacy policy/);
 });
+
+import { secret } from '../src/index.js';
+
+test('secret() cleans up pasted values', () => {
+  assert.equal(secret('﻿sk-ant-abc\r\n'), 'sk-ant-abc');
+  assert.equal(secret('"sk-ant-abc"'), 'sk-ant-abc');
+  assert.equal(secret(undefined), '');
+});
