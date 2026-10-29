@@ -237,7 +237,7 @@ otherwise.</p>
 `, v);
 }
 
-export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.peprahtech.moneycore';
+export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.peprahsoft.moneycore';
 
 /** Homepage. Also shown when someone opens a shared calculator or lesson link. */
 export function homePage(env, { shared = false } = {}) {

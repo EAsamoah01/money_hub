@@ -104,7 +104,7 @@ Product IDs can never be reused, so get them right the first time.
 
 ### In RevenueCat
 
-1. **Project → Apps → + New → Google Play**, package name `com.peprahtech.moneycore`.
+1. **Project → Apps → + New → Google Play**, package name `com.peprahsoft.moneycore`.
 2. **Service account credentials:** follow RevenueCat's guide *Creating Play Service Credentials* (in
    Google Cloud, enable the Play Android Developer API, create a service account and a JSON key; in Play
    Console → Users and permissions, invite the service account email with: *View app information*, *View

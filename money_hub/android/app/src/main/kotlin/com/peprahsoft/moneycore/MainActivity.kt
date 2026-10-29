@@ -1,4 +1,4 @@
-package com.Peprahtech.money_hub
+package com.peprahsoft.moneycore
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

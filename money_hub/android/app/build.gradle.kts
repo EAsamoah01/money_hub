@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.Peprahtech.money_hub"
+    namespace = "com.peprahsoft.moneycore"
     // Google Play requires new apps and updates to target Android 16 (API 36).
     compileSdk = maxOf(flutter.compileSdkVersion, 36)
     ndkVersion = flutter.ndkVersion
@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         // Your app's permanent ID on Google Play. It can never change after the first upload.
-        applicationId = "com.peprahtech.moneycore"
+        applicationId = "com.peprahsoft.moneycore"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
