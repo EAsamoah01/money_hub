@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/routes.dart';
+import '../../../core/widgets/affiliate_slot.dart';
 import '../data/lesson_progress_repository.dart';
 import '../data/lesson_repository.dart';
 import '../domain/lesson.dart';
@@ -92,6 +93,9 @@ class _LessonBody extends StatelessWidget {
                   const SizedBox(height: 8),
                 ],
                 for (final s in lesson.sections) _Section(section: s),
+                // Partner offer for this lesson, if the offers file has one
+                // (e.g. learn.index-funds-101). Shows nothing otherwise.
+                AffiliateSlot(placement: 'learn.${lesson.id}'),
                 const SizedBox(height: 24),
                 if (lesson.quiz.isNotEmpty)
                   FilledButton.icon(

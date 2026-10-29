@@ -1,0 +1,96 @@
+{
+  "_comment": "Partner offers by placement. The live copy is ai_worker/offers.json, served at https://moneycore.peprahsoft.com/offers.json. Edit that file and run `npx wrangler deploy` to change offers without an app update. This bundled copy is the fallback when the phone is offline. Links containing example.com or YOUR_ID are placeholders: shown in debug builds only, never in release.",
+  "disclosure": "Some links are affiliate links. We may earn a commission if you sign up, at no extra cost to you. This never changes our calculations.",
+  "placements": {
+    "tools.compound-interest.result": {
+      "title": "Start investing with as little as $1",
+      "body": "Low-cost index funds, no account minimum.",
+      "partner": "PARTNER_NAME",
+      "cta": "See the offer",
+      "url": "https://example.com/invest?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=compound",
+      "enabled": true
+    },
+    "tools.fire.result": {
+      "title": "Open a retirement account (IRA) in minutes",
+      "body": "Tax-advantaged saving for your FIRE number.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/ira?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=fire",
+      "enabled": true
+    },
+    "tools.what-if.result": {
+      "title": "Put your next $100 to work",
+      "body": "Buy fractional shares of index funds.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/invest?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=whatif",
+      "enabled": true
+    },
+    "tools.dca.result": {
+      "title": "Set up automatic investing",
+      "body": "Invest a fixed amount every week or month, automatically.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/auto?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=dca",
+      "enabled": true
+    },
+    "tools.inflation.result": {
+      "title": "Earn more on cash than a regular savings account",
+      "body": "High-yield savings accounts help cash keep up with inflation.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/hysa?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=inflation",
+      "enabled": true
+    },
+    "tools.debt-payoff.result": {
+      "title": "See if a 0% balance transfer could cut your interest",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/balance-transfer?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=debtcalc",
+      "enabled": true
+    },
+    "goals.debt.detail": {
+      "title": "Paying high interest? Compare consolidation options",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/consolidate?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=debtdetail",
+      "enabled": true
+    },
+    "budget.overview": {
+      "title": "Give your emergency fund a better rate",
+      "body": "Keep your Emergency Fund envelope in a high-yield savings account.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/hysa?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=budget",
+      "enabled": true
+    },
+    "learn.index-funds-101": {
+      "title": "Ready to buy your first index fund?",
+      "body": "Open a low-cost brokerage account. No minimum to start.",
+      "partner": "PARTNER_NAME",
+      "cta": "Start investing",
+      "url": "https://example.com/invest?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=lesson-index-funds",
+      "enabled": true
+    },
+    "learn.compound-interest-basics": {
+      "title": "Let compound interest work for you",
+      "body": "A robo-advisor invests and rebalances for you automatically.",
+      "partner": "PARTNER_NAME",
+      "cta": "See the offer",
+      "url": "https://example.com/robo?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=lesson-compound",
+      "enabled": true
+    },
+    "learn.emergency-fund-basics": {
+      "title": "Where to keep your emergency fund",
+      "body": "High-yield savings: easy to reach, earns more than a checking account.",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/hysa?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=lesson-emergency",
+      "enabled": true
+    },
+    "learn.inflation-and-cash": {
+      "title": "Help your cash keep up with inflation",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/hysa?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=lesson-inflation",
+      "enabled": true
+    },
+    "learn.fire-and-the-4-percent-rule": {
+      "title": "Open a Roth IRA for your FIRE plan",
+      "partner": "PARTNER_NAME",
+      "url": "https://example.com/ira?ref=YOUR_ID&utm_source=moneycore&utm_medium=app&utm_campaign=lesson-fire",
+      "enabled": true
+    }
+  }
+}

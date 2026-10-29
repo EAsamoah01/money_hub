@@ -65,18 +65,24 @@ Offers appear in these placements (one card each, with the disclosure printed un
 | `tools.debt-payoff.result` | Debt payoff calculator |
 | `goals.debt.detail` | A debt's detail page |
 | `budget.overview` | Budget tab |
+| `learn.<lesson id>` | Under a lesson, e.g. `learn.index-funds-101`, `learn.compound-interest-basics`, `learn.emergency-fund-basics`, `learn.inflation-and-cash`, `learn.fire-and-the-4-percent-rule` |
 
-### Add a real offer
-1. Join partner programs (brokers, high-yield savings, balance-transfer cards, budgeting tools), directly or through affiliate networks. Read each program's rules. Many forbid certain wording or require approval of placements.
-2. Edit `assets/config/affiliate_offers.json`: set `title`, `partner`, `url` (your tracked link), `enabled: true`.
-3. Links containing `example.com` or `YOUR_ID` are treated as **placeholders**: they show in debug builds (marked "placeholder link") and are **hidden in release builds**.
+Any lesson can get an offer just by adding `learn.<its id>` to the file; no code change needed.
 
-### Change offers without an app update
-1. Create a **public GitHub Gist** (or any static host) with your `affiliate_offers.json`.
-2. Click **Raw** and copy that URL.
-3. Put it in `env.json` as `OFFERS_URL` and rebuild once.
+### Add or change a real offer (no app update)
+The live list is **`ai_worker/offers.json`**, served at `https://moneycore.peprahsoft.com/offers.json`.
 
-The app downloads it on start, caches it for offline use, and falls back to the bundled file. From then on, editing the gist changes offers for everyone.
+1. Join partner programs (robo-advisors, brokerages, IRA providers, high-yield savings, balance-transfer cards), directly or through networks such as Impact, CJ or FlexOffers. Read each program's rules: many restrict wording or in-app placement.
+2. Edit `ai_worker/offers.json`: set `title`, `body`, `partner`, `cta`, `url` (your tracked link) and `enabled: true`. Set `enabled: false` to pause an offer.
+3. `cd ai_worker` then `npx wrangler deploy`. Phones pick up the change on their next app start.
+4. Copy the same file to `assets/config/affiliate_offers.json` before your next app release. That copy is the offline fallback, and a test checks the two match.
+
+Links containing `example.com` or `YOUR_ID` are **placeholders**: they show in debug builds (marked "placeholder link") and are **hidden in release builds**.
+
+### Click tracking
+Taps on real offers go through `https://moneycore.peprahsoft.com/go/<placement>`. The server adds one to that offer's monthly count, then redirects to the partner. It stores no user ID, IP or device data, and it only redirects to links in its own offers file.
+
+See the counts: open `https://moneycore.peprahsoft.com/stats?token=<your DEV_TOKEN>` in a browser. Compare them with each partner's dashboard to see which offers earn.
 
 ### Compliance (US)
 - **FTC:** the disclosure must sit next to the link (done) and be clear. Edit `disclosure` in the JSON if a partner needs specific wording.
