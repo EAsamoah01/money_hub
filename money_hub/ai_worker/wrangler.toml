@@ -14,7 +14,7 @@ PRO_ENTITLEMENT = "pro"
 DAILY_LIMIT = "100"
 
 # Shown on the /privacy and /terms pages. Fill these in before launch.
-DEVELOPER_NAME = "Peprah Tech"
+DEVELOPER_NAME = "Peprahsoft"
 CONTACT_EMAIL = "starlinkks@gmail.com"
 EFFECTIVE_DATE = "October 26, 2026"
 GOVERNING_LAW = "the State of California, USA"
