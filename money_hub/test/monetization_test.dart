@@ -66,4 +66,16 @@ void main() {
       expect(monthly.perMonthLabel(r'$'), isNull);
     });
   });
+
+  test('real offers open through the click-counting redirect', () {
+    const real = AffiliateOffer(placement: 'tools.fire.result', title: 'T', partner: 'P', url: 'https://partner.test/?ref=1');
+    expect(real.trackedUri.toString(), endsWith('/go/tools.fire.result'));
+    const placeholder = AffiliateOffer(placement: 'x', title: 'T', partner: 'P', url: 'https://example.com/?ref=YOUR_ID');
+    expect(placeholder.trackedUri.toString(), 'https://example.com/?ref=YOUR_ID');
+  });
+
+  test('bundled and server offers files match', () {
+    expect(File('assets/config/affiliate_offers.json').readAsStringSync(),
+        File('ai_worker/offers.json').readAsStringSync());
+  });
 }

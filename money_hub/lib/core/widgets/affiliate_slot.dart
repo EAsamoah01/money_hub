@@ -29,7 +29,7 @@ class AffiliateSlot extends ConsumerWidget {
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () => launchUrl(Uri.parse(offer.url), mode: LaunchMode.externalApplication),
+          onTap: () => launchUrl(offer.trackedUri, mode: LaunchMode.externalApplication),
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Column(
@@ -79,7 +79,7 @@ class AffiliateSlot extends ConsumerWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: FilledButton.tonalIcon(
-                    onPressed: () => launchUrl(Uri.parse(offer.url), mode: LaunchMode.externalApplication),
+                    onPressed: () => launchUrl(offer.trackedUri, mode: LaunchMode.externalApplication),
                     icon: const Icon(Icons.open_in_new, size: 16),
                     label: Text(offer.cta ?? 'Learn more'),
                   ),

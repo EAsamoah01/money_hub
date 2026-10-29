@@ -14,6 +14,7 @@
 // It also serves the public /privacy and /terms pages (src/pages.js).
 
 import { homePage, htmlResponse, privacyPage, termsPage } from './pages.js';
+import { OFFERS, clickStats, handleGo } from './offers.js';
 
 export const MODES = {
   coach: {
@@ -189,6 +190,19 @@ export default {
       if (url.pathname === '/privacy') return htmlResponse(privacyPage(env));
       if (url.pathname === '/terms') return htmlResponse(termsPage(env));
       if (url.pathname === '/') return htmlResponse(homePage(env));
+      if (url.pathname === '/offers.json') {
+        return new Response(JSON.stringify(OFFERS), {
+          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', ...CORS },
+        });
+      }
+      if (url.pathname.startsWith('/go/')) {
+        return handleGo(decodeURIComponent(url.pathname.slice(4)), env, ctx);
+      }
+      if (url.pathname === '/stats') {
+        const token = url.searchParams.get('token') || '';
+        if (!secret(env.DEV_TOKEN) || token.trim() !== secret(env.DEV_TOKEN)) return fail(401, 'unauthorized', 'Add ?token=<your DEV_TOKEN>');
+        return json({ clicks: await clickStats(env) });
+      }
       // Links shared from the app, e.g. /tools/fire?spend=40000
       if (url.pathname.startsWith('/tools') || url.pathname.startsWith('/learn')) {
         return htmlResponse(homePage(env, { shared: true }));

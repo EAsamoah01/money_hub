@@ -25,9 +25,22 @@ abstract final class AppConfig {
   /// Entitlement identifier you create in RevenueCat. Must match exactly.
   static const proEntitlement = 'pro';
 
-  /// Optional: where to download live affiliate offers from. Leave empty to
-  /// use only assets/config/affiliate_offers.json.
-  static const offersUrl = String.fromEnvironment('OFFERS_URL');
+  /// Where live partner offers come from. Defaults to the offers file served
+  /// by the worker (ai_worker/offers.json), so you can change offers without an
+  /// app update. Set OFFERS_URL to use a different file.
+  static String get offersUrl {
+    const override = String.fromEnvironment('OFFERS_URL');
+    return override.isNotEmpty ? override : '$serverBase/offers.json';
+  }
+
+  /// The Money Core server (the Cloudflare Worker): AI, legal pages, offers.
+  static String get serverBase {
+    var base = aiProxyUrl.trim();
+    while (base.endsWith('/')) {
+      base = base.substring(0, base.length - 1);
+    }
+    return base.isEmpty ? 'https://moneycore.peprahsoft.com' : base;
+  }
 
   /// Required on the paywall by Apple and Google. By default these are the
   /// pages served by the AI worker (ai_worker/src/pages.js); set PRIVACY_URL /
@@ -35,14 +48,7 @@ abstract final class AppConfig {
   static String get privacyPolicyUrl => _page(const String.fromEnvironment('PRIVACY_URL'), 'privacy');
   static String get termsUrl => _page(const String.fromEnvironment('TERMS_URL'), 'terms');
 
-  static String _page(String override, String path) {
-    if (override.isNotEmpty) return override;
-    var base = aiProxyUrl.trim();
-    while (base.endsWith('/')) {
-      base = base.substring(0, base.length - 1);
-    }
-    return base.isEmpty ? 'https://moneycore.peprahsoft.com/$path' : '$base/$path';
-  }
+  static String _page(String override, String path) => override.isNotEmpty ? override : '$serverBase/$path';
 
   /// The AI proxy (Cloudflare Worker in ai_worker/). Empty = AI turned off.
   static const aiProxyUrl = String.fromEnvironment('AI_PROXY_URL');

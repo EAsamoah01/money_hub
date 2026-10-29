@@ -34,6 +34,13 @@ class AffiliateOffer {
   /// Placeholder links from the example file must never reach real users.
   bool get isPlaceholder => url.contains('example.com') || url.contains('YOUR_ID');
 
+  /// The link to open. Real offers go through the server's /go/<placement>
+  /// redirect, which counts the click (no personal data) and forwards to the
+  /// partner. The server only redirects to links in its own offers file.
+  Uri get trackedUri => isPlaceholder
+      ? Uri.parse(url)
+      : Uri.parse('${AppConfig.serverBase}/go/${Uri.encodeComponent(placement)}');
+
   /// Whether this offer may be shown in the current build.
   bool get showable => enabled && url.startsWith('http') && (kDebugMode || !isPlaceholder);
 }

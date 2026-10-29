@@ -97,7 +97,9 @@ receives your biometric data.</p>
 result. Never bank account numbers or passwords.</td>
 <td>Our server on Cloudflare, which passes it to Anthropic (Claude) to write the answer</td></tr>
 <tr><td>The app loads partner offers</td><td>A standard web request (your IP address)</td>
-<td>Our offers file host</td></tr>
+<td>Our server on Cloudflare</td></tr>
+<tr><td>You tap a partner offer</td><td>We add one to a monthly count for that offer (no user ID or device data), then
+send you to the partner's website, which then collects its own data</td><td>Our server, then the partner</td></tr>
 <tr><td>You play a lesson video</td><td>Standard YouTube playback data</td><td>Google / YouTube</td></tr>
 <tr><td>You tap a link (offer, cancel page, share)</td><td>Whatever that website or app collects</td>
 <td>That website or app</td></tr>

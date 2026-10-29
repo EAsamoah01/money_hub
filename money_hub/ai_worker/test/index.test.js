@@ -89,3 +89,38 @@ test('secret() cleans up pasted values', () => {
   assert.equal(secret('"sk-ant-abc"'), 'sk-ant-abc');
   assert.equal(secret(undefined), '');
 });
+
+import { offerUrl, clickStats } from '../src/offers.js';
+
+test('offers: served, tracked and redirect only to listed partners', async () => {
+  const store = new Map();
+  const env = {
+    DEV_TOKEN: 'tok',
+    USAGE: {
+      get: async (k) => store.get(k) ?? null,
+      put: async (k, v) => store.set(k, v),
+      list: async ({ prefix }) => ({ keys: [...store.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name })) }),
+    },
+  };
+  const waits = [];
+  const ctx = { waitUntil: (p) => waits.push(p) };
+
+  const list = await worker.fetch(new Request('https://w/offers.json'), env, ctx);
+  const cfg = await list.json();
+  assert.ok(cfg.placements['learn.index-funds-101']);
+
+  const go = await worker.fetch(new Request('https://w/go/tools.fire.result'), env, ctx);
+  assert.equal(go.status, 302);
+  assert.equal(go.headers.get('Location'), offerUrl('tools.fire.result'));
+  await Promise.all(waits);
+
+  assert.equal((await worker.fetch(new Request('https://w/go/https%3A%2F%2Fevil.test'), env, ctx)).status, 404);
+  assert.equal(offerUrl('x', { placements: { x: { url: 'javascript:alert(1)' } } }), null);
+  assert.equal(offerUrl('x', { placements: { x: { url: 'https://a.test', enabled: false } } }), null);
+
+  const stats = await clickStats(env);
+  const thisMonth = new Date().toISOString().slice(0, 7);
+  assert.equal(stats[thisMonth]['tools.fire.result'], 1);
+  assert.equal((await worker.fetch(new Request('https://w/stats'), env, ctx)).status, 401);
+  assert.equal((await worker.fetch(new Request('https://w/stats?token=tok'), env, ctx)).status, 200);
+});
