@@ -66,4 +66,4 @@ flutter install -d <device-id>
 
 ## Before publishing (covered in the launch-prep step)
 - Create an **upload key** and release signing config (the build currently signs release APKs with the debug key).
-- The app ID is **`com.peprahtech.moneycore`**. It can never change after the first upload to Google Play.
+- The app ID is **`com.peprahsoft.moneycore`**. It can never change after the first upload to Google Play.
